@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Governance Dashboard</title>
+<style>
+  :root{--bg:#0f1420;--card:#1a2233;--ink:#e8edf7;--mut:#8fa0bd;--acc:#4f8cff;--ok:#3ecf8e;--gate:#ff5d73;--line:#2a3550}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Segoe UI,system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:24px;max-width:900px;margin:auto}
+  h1{font-size:1.5rem;margin-bottom:4px}
+  .sub{color:var(--mut);margin-bottom:20px;font-size:.9rem}
+  .progress{background:var(--card);border-radius:12px;height:22px;overflow:hidden;margin-bottom:24px;border:1px solid var(--line)}
+  #bar{background:linear-gradient(90deg,var(--acc),var(--ok));height:100%;width:0;transition:width .4s;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.75rem;font-weight:700;color:#08111f}
+  details.phase{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+  summary{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  .num{background:var(--line);border-radius:8px;min-width:38px;text-align:center;padding:6px 0;font-weight:700;font-size:.85rem}
+  details.done .num{background:var(--ok);color:#08111f}
+  .ptitle{flex:1}.ptitle b{display:block}.ptitle .d{color:var(--mut);font-size:.8rem}
+  .badge{font-size:.72rem;padding:3px 9px;border-radius:20px;background:var(--line);color:var(--mut)}
+  details.done .badge{background:rgba(62,207,142,.15);color:var(--ok)}
+  .body{padding:4px 16px 16px;border-top:1px solid var(--line)}
+  label.gate{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;margin-top:8px;background:rgba(255,93,115,.07);border:1px solid rgba(255,93,115,.25);cursor:pointer;font-size:.9rem}
+  label.gate input{margin-top:3px;accent-color:var(--ok)}
+  .tag{color:var(--gate);font-weight:700;font-size:.7rem;letter-spacing:.06em;display:block}
+  label.gate input:checked ~ .txt{opacity:.55}
+  label.gate input:checked ~ .txt .g{text-decoration:line-through;color:var(--mut)}
+  .q{margin-top:12px;padding:10px 12px;background:rgba(79,140,255,.08);border-left:3px solid var(--acc);border-radius:0 8px 8px 0;font-size:.88rem}
+  .q b{color:var(--acc)}
+  .note{color:var(--mut);font-size:.78rem;margin-top:18px;text-align:center}
+  #grad{background:linear-gradient(135deg,#15251d,#132033);border:1px solid var(--ok);border-radius:12px;padding:18px;margin-top:16px;text-align:center;display:none}
+  button#reset{background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:.75rem;float:right}
+</style>
+</head>
+<body>
+<button id="reset">Reset</button>
+<h1>🧭 Project Governance Dashboard</h1>
+<div class="sub">For the product owner. Tick a gate only after you have seen the evidence. Details live in the <code>phases/</code> files; questions come from <code>OWNER-GUIDE.md</code>.</div>
+<div class="progress"><div id="bar"></div></div>
+
+<details class="phase" open>
+<summary><span class="num">00</span><span class="ptitle"><b>Inception &amp; Team</b><span class="d">Why, who, and how — before building</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g00a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Charter approved by owner (name + date recorded)</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g00b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Success criteria are measurable by a non-tech person</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g00c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Definition of Done requires review + tests</span></span></label>
+<div class="q"><b>Ask your team:</b> “What does ‘done’ mean on this project?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">01</span><span class="ptitle"><b>Product Planning</b><span class="d">Slice the idea into a small first version</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g01a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">MVP is ≤ 7 stories and ~4–6 weeks max</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g01b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Every MVP story has checkable acceptance criteria</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g01c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Kanban board live — all work visible</span></span></label>
+<div class="q"><b>Ask your team:</b> “Which single assumption does the MVP test?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">02</span><span class="ptitle"><b>Architecture &amp; Design</b><span class="d">Decide how it’s built; write decisions down</span></span><span class="badge">0/4</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g02a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">≥ 3 decision records (ADRs) with consequences</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g02b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Threat model names sensitive data + protection</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g02c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Monthly cost ceiling written down</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g02d"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Module boundaries documented</span></span></label>
+<div class="q"><b>Ask your team:</b> “What’s our monthly cost at launch — and at 10× users?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">03</span><span class="ptitle"><b>Repo &amp; CI Setup</b><span class="d">Review + automatic checks on every change</span></span><span class="badge">0/4</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g03a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Main branch protected — no direct pushes</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g03b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">CI runs and blocks every change on failure</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g03c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">No secrets in the repository</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g03d"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Full flow exercised once end-to-end</span></span></label>
+<div class="q"><b>Ask your team:</b> “Show me the last change that failed a check.”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">04</span><span class="ptitle"><b>Development</b><span class="d">Build the MVP in small reviewed steps</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g04a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Every merge went through a reviewed, green-CI PR</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g04b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">No secrets or hardcoded config in code</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g04c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">MVP runs from clean checkout via README only</span></span></label>
+<div class="q"><b>Ask your team:</b> “Can I see a demo — today?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">05</span><span class="ptitle"><b>Containerization</b><span class="d">Runs anywhere with one command</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g05a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">One command starts the whole stack</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g05b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">No secrets baked into images</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g05c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Data proven to survive container recreation</span></span></label>
+<div class="q"><b>Ask your team:</b> “If we delete the containers, is customer data gone?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">06</span><span class="ptitle"><b>Testing &amp; QA</b><span class="d">Build the safety net</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g06a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">CI blocks merges on test failure (demonstrated)</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g06b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Core user journey has an automated end-to-end test</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g06c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Coverage threshold met and auto-enforced</span></span></label>
+<div class="q"><b>Ask your team:</b> “If the core feature broke tonight, what catches it?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">07</span><span class="ptitle"><b>CI/CD Pipeline</b><span class="d">Automate the road to the server</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g07a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Merge deploys to staging automatically</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g07b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Rollback rehearsed, not just documented</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g07c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">No credentials in repo or workflow files</span></span></label>
+<div class="q"><b>Ask your team:</b> “When did we last practice rollback?”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">08</span><span class="ptitle"><b>Security (DevSecOps)</b><span class="d">Scans wired into the pipeline</span></span><span class="badge">0/4</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g08a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Zero unaddressed critical/high vulnerabilities</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g08b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Full-history secrets scan clean (or keys rotated)</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g08c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Security scans run on every change forever</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g08d"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Auth review done: hashing, expiry, permissions</span></span></label>
+<div class="q"><b>Ask your team:</b> “Show me the open security findings list.”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">09</span><span class="ptitle"><b>Release</b><span class="d">Version, changelog, launch checklist, go live</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g09a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Owner signed the production readiness checklist</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g09b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Production runs a pinned, tested version</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g09c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Production rollback rehearsed</span></span></label>
+<div class="q"><b>Ask your team:</b> “Walk me through the signed launch checklist.”</div>
+</div>
+</details>
+
+<details class="phase">
+<summary><span class="num">10</span><span class="ptitle"><b>Operations</b><span class="d">Know before users when something breaks</span></span><span class="badge">0/3</span></summary>
+<div class="body">
+<label class="gate"><input type="checkbox" data-k="g10a"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Alert reached a human in a fire drill</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g10b"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">A backup was actually restored successfully</span></span></label>
+<label class="gate"><input type="checkbox" data-k="g10c"><span class="txt"><span class="tag">🔴 GATE</span><span class="g">Runbook exists and a second person followed it</span></span></label>
+<div class="q"><b>Ask your team:</b> “How would we find out the site is down — and how fast?”</div>
+</div>
+</details>
+
+<div id="grad"><h2>🎓 Lifecycle complete!</h2><p style="color:var(--mut);margin-top:6px">The project now runs in <b>Continuous Mode</b> — see <code>continuous/CONTINUOUS-MODE.md</code>. Your rituals: weekly review, changelog per release, monthly backup-restore question.</p></div>
+<div class="note">Gates marked 🔴 can never be skipped — by anyone, including you. Progress saves in this browser when JavaScript is available.</div>
+
+<script>
+(function(){
+  var boxes=document.querySelectorAll('input[data-k]');
+  var store={};
+  try{store=JSON.parse(localStorage.getItem('gov36')||'{}')}catch(e){}
+  function save(){try{localStorage.setItem('gov36',JSON.stringify(store))}catch(e){}}
+  function refresh(){
+    var done=0;
+    document.querySelectorAll('details.phase').forEach(function(ph){
+      var b=ph.querySelectorAll('input[data-k]'),c=0;
+      b.forEach(function(x){if(x.checked)c++});
+      done+=c;
+      ph.querySelector('.badge').textContent=c+'/'+b.length;
+      if(c===b.length){ph.classList.add('done')}else{ph.classList.remove('done')}
+    });
+    var total=boxes.length,bar=document.getElementById('bar');
+    bar.style.width=(done/total*100)+'%';
+    bar.textContent=Math.round(done/total*100)+'%';
+    document.getElementById('grad').style.display=(done===total)?'block':'none';
+  }
+  boxes.forEach(function(x){
+    if(store[x.dataset.k])x.checked=true;
+    x.addEventListener('change',function(){store[x.dataset.k]=x.checked;save();refresh()});
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    if(confirm('Clear all progress?')){store={};save();boxes.forEach(function(x){x.checked=false});refresh()}
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>
